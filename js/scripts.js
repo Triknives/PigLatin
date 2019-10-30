@@ -36,12 +36,17 @@ var handleWord = function(word) {
 
 var pigLatin = function(sentence) {
   var sentenceString = sentence.toString(); // gatekeep to make sure input is a string
+  var endingPunctuation = "";
+  if (!alpha.test(sentenceString[sentenceString.length-1])) {
+    endingPunctuation = sentenceString[sentenceString.length-1];
+    sentenceString = sentenceString.substring(0, sentenceString.length - 1);
+  };
   var wordArray = sentenceString.split(' '); // split sentenceString into an array at any space and store as wordArray
   var resultArray = []; // setting up empty array for results
   wordArray.forEach(function(word) { // target wordArray and open a loop that will iterate over every word
     resultArray.push(handleWord(word));  // push the return from handleWord with the argument of word into resultArray
   });
-  return resultArray.join(' '); // Join resultArray back into a string with " " between each word and return
+  return resultArray.join(' ') + endingPunctuation; // Join resultArray back into a string with " " between each word and return
 };
 
 
