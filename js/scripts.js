@@ -1,78 +1,65 @@
-var vowels = {a:true, e:true, i:true, o:true, u:true, "A":true, "E":true, "I":true, "O":true, "U":true};
+
+var vowels = /[aeiou]/i;
+var alpha = /[a-z]/i;
 
 var handleConsonants = function(word) {
 
-  var consonantShift = function(array) {
-    if (array[0] === "q" && array[1] === "u") {
-      var q = array.shift();
-      var u = array.shift();
-      array.push(q,u);
-      return array.join('')+"ay";
-    } else if (!vowels[array[0]]) {
-      var thisFirstLetter = array.shift();
-      array.push(thisFirstLetter);
-      return consonantShift(array);
-    } else {
-      return array.join('')+"ay";
+  var consonantShift = function(letterArray) {
+    if (letterArray[0] === "q" && letterArray[1] === "u") { // check the first letter and the second letter to see if they match q(0) u(1)
+      var q = letterArray.shift(); // if so store "q" in q as we shift it out of letterArray
+      var u = letterArray.shift(); // same thing for "u" into u
+      letterArray.push(q,u);  // push q & u into the end of letterArray
+      return letterArray.join('')+"ay"; // join letter array into a string and add "ay" to the end before returning
+    } else if (!vowels.test(letterArray[0])) { // test to verify that the first letter is not a vowel
+      var thisFirstLetter = letterArray.shift(); // shift the first consonant letter from letterArray into thisFirstLetter
+      letterArray.push(thisFirstLetter); // push thisFirstLetter into the end of letterArray
+      return consonantShift(letterArray); // return the result of a recursive call to consonantShift with the current state of letterArray
+    } else { // if fails previous conditions
+      return letterArray.join('')+"ay"; // Join letterArray back into a string and add "ay" before returning
     }
   }
 
-  var array = word.split('');
-  return consonantShift(array);
+  var letterArray = word.split(''); // Split word at every character and store as letterArray
+  return consonantShift(letterArray); // return result of consonantShift with the argument of letterArray
 
 };
 
 var handleWord = function(word) {
-  if (!(/[a-zA-Z]/.test(word[0]))) {
-    return word;
-  } else if (vowels[word[0]]) {
-    return word + "way";
-  } else {
-    return handleConsonants(word);
+  if (!(alpha.test(word[0]))) { // test if first letter in the word is not an alpha letter
+    return word; // if first letter is non-alpha, return word as it is
+  } else if (vowels.test(word[0])) { // test if first letter is a vowel
+    return word + "way"; // if first letter is a vowel, return word with "way" concatinated to the end
+  } else { // if fails previous conditions
+    return handleConsonants(word); // return the result of handleConsonants with the argument of word
   }
 }
 
 var pigLatin = function(sentence) {
-  var sentenceString = sentence.toString();
-  var wordArray = sentenceString.split(' ');
-  var resultArray = [];
-  wordArray.forEach(function(word) {
-    resultArray.push(handleWord(word));
+  var sentenceString = sentence.toString(); // gatekeep to make sure input is a string
+  var wordArray = sentenceString.split(' '); // split sentenceString into an array at any space and store as wordArray
+  var resultArray = []; // setting up empty array for results
+  wordArray.forEach(function(word) { // target wordArray and open a loop that will iterate over every word
+    resultArray.push(handleWord(word));  // push the return from handleWord with the argument of word into resultArray
   });
-  return resultArray.join(' ');
+  return resultArray.join(' '); // Join resultArray back into a string with " " between each word and return
 };
 
-console.log(pigLatin('Pig Latin translator'));
 
 
-"squeal"
+// USER INTERFACE
+$(document).ready(function() {
+  $("#inputForm").submit(function(event){
+    event.preventDefault();
+    var userInput = $("#userInput").val();
+    $("#result").text(pigLatin(userInput));
 
+    $(".bg-info").hide();
+    $(".bg-success").fadeIn();
 
-
-
-
-
-
-
-
-//Function will take a string as its argument
-
-//Function will return a string as its output
-
-
-
-
-
-
-
-
-// For words beginning with "y", treat "y" as a consonant.
-
-//The program does nothing to non-alphabetical characters, since they do not contain consonants or vowels.
-
-// For words beginning with a vowel, add "way" to the end.
-
-// If the first consonants include "qu", move the "u" along with the "q". Don't forget about words like "squeal" where "qu" doesn't come first!
-//
-// For words beginning with one or more consonants, move all of the first consecutive consonants to the end, and add "ay".
-//
+  });
+  $("#restart").click(function() {
+    $("#userInput").val('');
+    $(".bg-success").hide();
+    $(".bg-info").fadeIn();
+  });
+});

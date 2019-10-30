@@ -10,7 +10,27 @@
   </head>
   <body>
     <div class="container">
-
+      <div class="jumbotron mt-3">
+        <h2>Let's Make Some New Words... And Sentences!</h2>
+        <p>
+          Pig Latin Generator:
+          <br>
+          enter a sentence and watch the magic happen!
+        </p>
+      </div>
+      <div class="p-5 card bg-info">
+        <form id="inputForm" >
+          <div class="form-group">
+            <label for="userInput">Enter Yer Wordz</label>
+            <textarea class="form-control" name="userInput" id="userInput" rows="3"></textarea>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" name="button">GO!!!</button>
+          </div>
+        </form>
+      </div>
+      <div class="mt-5 p-5 card bg-success">
+        <h5 id="result"></h5>
+        <button id="restart" class="btn btn-primary btn-lg btn-block" type="button" name="button">GO AGAIN!!!</button>
+      </div>
     </div>
   </body>
 </html>
