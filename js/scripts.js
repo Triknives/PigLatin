@@ -54,18 +54,19 @@ var pigLatin = function(sentence) {
 
 // USER INTERFACE
 $(document).ready(function() {
+
   $("#inputForm").submit(function(event){
     event.preventDefault();
     var userInput = $("#userInput").val();
     $("#result").text(pigLatin(userInput));
-
     $(".bg-info").hide();
     $(".bg-success").fadeIn();
-
   });
+
   $("#restart").click(function() {
     $("#userInput").val('');
     $(".bg-success").hide();
     $(".bg-info").fadeIn();
   });
+
 });
