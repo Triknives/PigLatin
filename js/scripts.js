@@ -25,28 +25,29 @@ var handleConsonants = function(word) {
 };
 
 var handleWord = function(word) {
+  var endingPunctuation = "";
+  if (!alpha.test(word[word.length-1])) {
+    endingPunctuation = word[word.length-1];
+    word = word.substring(0, word.length - 1);
+  };
   if (!(alpha.test(word[0]))) { // test if first letter in the word is not an alpha letter
-    return word; // if first letter is non-alpha, return word as it is
+    return word + endingPunctuation; // if first letter is non-alpha, return word as it is
   } else if (vowels.test(word[0])) { // test if first letter is a vowel
-    return word + "way"; // if first letter is a vowel, return word with "way" concatinated to the end
+    return word + "way" + endingPunctuation; // if first letter is a vowel, return word with "way" concatinated to the end
   } else { // if fails previous conditions
-    return handleConsonants(word); // return the result of handleConsonants with the argument of word
+    return handleConsonants(word) + endingPunctuation; // return the result of handleConsonants with the argument of word
   }
 }
 
 var pigLatin = function(sentence) {
   var sentenceString = sentence.toString(); // gatekeep to make sure input is a string
-  var endingPunctuation = "";
-  if (!alpha.test(sentenceString[sentenceString.length-1])) {
-    endingPunctuation = sentenceString[sentenceString.length-1];
-    sentenceString = sentenceString.substring(0, sentenceString.length - 1);
-  };
+
   var wordArray = sentenceString.split(' '); // split sentenceString into an array at any space and store as wordArray
   var resultArray = []; // setting up empty array for results
   wordArray.forEach(function(word) { // target wordArray and open a loop that will iterate over every word
     resultArray.push(handleWord(word));  // push the return from handleWord with the argument of word into resultArray
   });
-  return resultArray.join(' ') + endingPunctuation; // Join resultArray back into a string with " " between each word and return
+  return resultArray.join(' '); // Join resultArray back into a string with " " between each word and return
 };
 
 
